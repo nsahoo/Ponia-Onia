@@ -44,7 +44,7 @@ class Onia2MuMuRootupler:public edm::EDAnalyzer {
 	static void fillDescriptions(edm::ConfigurationDescriptions & descriptions);
 
       private:
-        UInt_t getTriggerBits(const edm::Event &);
+        std::vector<UInt_t> getTriggerBits(const edm::Event &);
         bool   isAncestor(const reco::Candidate *, const reco::Candidate *);
         const  reco::Candidate* GetAncestor(const reco::Candidate *);
 
@@ -72,6 +72,7 @@ class Onia2MuMuRootupler:public edm::EDAnalyzer {
 	UInt_t event;
         Int_t  irank;
         UInt_t trigger;
+        UInt_t passbit0, passbit1, passbit2, passbit3, passbit4, passbit5, passbit6, passbit7;
         Int_t  charge; 
 
 	TLorentzVector dimuon_p4;
@@ -97,7 +98,8 @@ class Onia2MuMuRootupler:public edm::EDAnalyzer {
         Int_t dimuon_pdgId;
 	TLorentzVector gen_dimuon_p4;
 	TLorentzVector gen_muonP_p4;
-	TLorentzVector gen_muonM_p4;
+        TLorentzVector gen_muonM_p4;
+
           
         edm::EDGetTokenT<reco::GenParticleCollection> genCands_;
         edm::EDGetTokenT<pat::PackedGenParticleCollection> packCands_;
@@ -126,6 +128,14 @@ OnlyGen_(iConfig.getParameter<bool>("OnlyGen"))
     onia_tree->Branch("event",   &event,   "event/i");
     onia_tree->Branch("irank",   &irank,   "irank/I");
     onia_tree->Branch("trigger", &trigger, "trigger/i");
+    onia_tree->Branch("passbit0", &passbit0, "passbit0/i");
+    onia_tree->Branch("passbit1", &passbit1, "passbit1/i");
+    onia_tree->Branch("passbit2", &passbit2, "passbit2/i");
+    onia_tree->Branch("passbit3", &passbit3, "passbit3/i");
+    onia_tree->Branch("passbit4", &passbit4, "passbit4/i");
+    onia_tree->Branch("passbit5", &passbit5, "passbit5/i");
+    onia_tree->Branch("passbit6", &passbit6, "passbit6/i");
+    onia_tree->Branch("passbit7", &passbit7, "passbit7/i");
     onia_tree->Branch("charge",  &charge,  "charge/I");
 
     onia_tree->Branch("dimuon_p4", "TLorentzVector", &dimuon_p4);
@@ -188,13 +198,15 @@ bool Onia2MuMuRootupler::isAncestor(const reco::Candidate* ancestor, const reco:
    ex. 1 = pass 0
 */
 
-UInt_t Onia2MuMuRootupler::getTriggerBits(const edm::Event& iEvent ) {
+std::vector <UInt_t> Onia2MuMuRootupler::getTriggerBits(const edm::Event& iEvent ) {
    UInt_t itrigger = 0;
+   std::vector <UInt_t> trgbitsN;
    edm::Handle<edm::TriggerResults> triggerResults_handle;
    iEvent.getByToken(triggerResults_Label, triggerResults_handle);
    if ( triggerResults_handle.isValid() ) { 
       const edm::TriggerNames & TheTriggerNames = iEvent.triggerNames(*triggerResults_handle);
       std::vector <unsigned int> bits_0, bits_1, bits_2, bits_3, bits_4, bits_5, bits_6, bits_7;
+     
       for ( int version = 1; version<3; version ++ ) {
          std::stringstream ss0,ss1,ss2,ss3,ss4,ss5,ss6,ss7;
          ss0<<"HLT_Dimuon16_Jpsi_v"<<version;
@@ -219,75 +231,110 @@ UInt_t Onia2MuMuRootupler::getTriggerBits(const edm::Event& iEvent ) {
          if ( bit < triggerResults_handle->size() ){
 	   if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 1;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+	   }
+	 } else {
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 0 size is more than handle size.\n");
+	 }
       }
       for (unsigned int i=0; i<bits_1.size(); i++) {
          unsigned int bit = bits_1[i];
          if ( bit < triggerResults_handle->size() ){
            if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 2;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+           } 
+         } else{
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 1 size is more than handle size.\n");
+	 }
       }
       for (unsigned int i=0; i<bits_2.size(); i++) {
          unsigned int bit = bits_2[i];
          if ( bit < triggerResults_handle->size() ){
            if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 4;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+           } 
+         } else{
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 2 size is more than handle size.\n");
+	 }
       }
       for (unsigned int i=0; i<bits_3.size(); i++) {
          unsigned int bit = bits_3[i];
          if ( bit < triggerResults_handle->size() ){
            if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 8;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+           } 
+         } else{
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 3 size is more than handle size.\n");
+	 }
       }
       for (unsigned int i=0; i<bits_4.size(); i++) {
          unsigned int bit = bits_4[i];
          if ( bit < triggerResults_handle->size() ){
            if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 16;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+           } 
+         } else{
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 4 size is more than handle size.\n");
+	 }
       }
       for (unsigned int i=0; i<bits_5.size(); i++) {
          unsigned int bit = bits_5[i];
          if ( bit < triggerResults_handle->size() ){
            if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 32;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+           } 
+         } else{
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 5 size is more than handle size.\n");
+	 }
       }
       for (unsigned int i=0; i<bits_6.size(); i++) {
          unsigned int bit = bits_6[i];
          if ( bit < triggerResults_handle->size() ){
            if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 64;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+           } 
+         } else{
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 6 size is more than handle size.\n");
+	 }
       }
       for (unsigned int i=0; i<bits_7.size(); i++) {
          unsigned int bit = bits_7[i];
          if ( bit < triggerResults_handle->size() ){
            if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
              itrigger += 128;
+	     trgbitsN.push_back(1);
              break;
-           }
-         }
+           } 
+         } else{
+	   trgbitsN.push_back(0);
+	   printf("INFO: Bit 7 size is more than handle size.\n");
+	 }
       }
    }
-   return itrigger;
+
+   trgbitsN.push_back(itrigger);
+   std::cout << "size: " << trgbitsN.size() << std::endl;
+   return trgbitsN ;
 }
 
 // ------------ method called for each event  ------------
@@ -303,9 +350,21 @@ void Onia2MuMuRootupler::analyze(const edm::Event & iEvent, const edm::EventSetu
     numPrimaryVertices = -1;
     if (primaryVertices_handle.isValid()) numPrimaryVertices = (int) primaryVertices_handle->size();
 
-    trigger = getTriggerBits(iEvent);
+    trigger = getTriggerBits(iEvent).at(8);
+    passbit0 = getTriggerBits(iEvent).at(0);
+    passbit1 = getTriggerBits(iEvent).at(1);
+    passbit2 = getTriggerBits(iEvent).at(2);
+    passbit3 = getTriggerBits(iEvent).at(3);
+    passbit4 = getTriggerBits(iEvent).at(4);
+    passbit5 = getTriggerBits(iEvent).at(5);
+    passbit6 = getTriggerBits(iEvent).at(6);
+    passbit7 = getTriggerBits(iEvent).at(7);
+
     run     = iEvent.id().run();
     event   = iEvent.id().event();
+
+    std::cout << "event: " << event << std::endl;
+    //printf("total triggered events: %d \n", trigger);
   }
 
   dimuon_pdgId = 0;
