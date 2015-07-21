@@ -553,11 +553,9 @@ void Onia2MuMuRootupler::analyze(const edm::Event & iEvent, const edm::EventSetu
 
 
     //trigger   = getTriggerBits(iEvent).at(18);
-   
+    /*
     trigger   = getTriggerBits(iEvent).at(18);
-
     passbit0  = getTriggerBits(iEvent).at(0);
-    
     passbit1  = getTriggerBits(iEvent).at(1);
     passbit2  = getTriggerBits(iEvent).at(2);
     passbit3  = getTriggerBits(iEvent).at(3);
@@ -565,11 +563,8 @@ void Onia2MuMuRootupler::analyze(const edm::Event & iEvent, const edm::EventSetu
     passbit5  = getTriggerBits(iEvent).at(5);
     passbit6  = getTriggerBits(iEvent).at(6);
     passbit7  = getTriggerBits(iEvent).at(7);
-
     passbit8   = getTriggerBits(iEvent).at(8);
     passbit9   = getTriggerBits(iEvent).at(9);
-    
-
     passbit10  = getTriggerBits(iEvent).at(10);
     passbit11  = getTriggerBits(iEvent).at(11);
     passbit12  = getTriggerBits(iEvent).at(12);
@@ -578,8 +573,34 @@ void Onia2MuMuRootupler::analyze(const edm::Event & iEvent, const edm::EventSetu
     passbit15  = getTriggerBits(iEvent).at(15);
     passbit16  = getTriggerBits(iEvent).at(16);
     passbit17  = getTriggerBits(iEvent).at(17);
+    */
 
-    trigvec = getTriggerBits(iEvent);
+
+    trigvec   = getTriggerBits(iEvent);
+
+    passbit0  = trigvec.at(0);
+    passbit1  = trigvec.at(1);
+    passbit2  = trigvec.at(2);
+    passbit3  = trigvec.at(3);
+    passbit4  = trigvec.at(4);
+    passbit5  = trigvec.at(5);
+    passbit6  = trigvec.at(6);
+    passbit7  = trigvec.at(7);
+    passbit8  = trigvec.at(8);
+    passbit9  = trigvec.at(9);
+    passbit10 = trigvec.at(10);
+    passbit11 = trigvec.at(11);
+    passbit12 = trigvec.at(12);
+    passbit13 = trigvec.at(13);
+    passbit14 = trigvec.at(14);
+    passbit15 = trigvec.at(15);
+    passbit16 = trigvec.at(16);
+    passbit17 = trigvec.at(17);
+
+    trigger   = trigvec.at(18);
+
+
+
     std::cout << "trigvec size: " << trigvec.size() << std::endl;
     if (trigvec.size() != 19) printf("ERROR: size is more.\n");
 
