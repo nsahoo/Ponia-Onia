@@ -5,7 +5,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(100))
 
 
 process.GlobalTag.globaltag = cms.string('74X_dataRun2_Prompt_v0')
@@ -53,7 +53,7 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service("TFileService",
-        fileName = cms.string('Onia2MuMuRootuple-Run2015B-MuOnia-v2.root'),
+        fileName = cms.string('Onia2MuMuRootuple-Run2015B-MuOnia.root'),
 )
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True))
