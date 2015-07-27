@@ -73,7 +73,7 @@ class Onia2MuMuRootupler:public edm::EDAnalyzer {
         Int_t  irank;
         UInt_t trigger;
         std::vector<UInt_t> trigvec;
-  UInt_t passbit0, passbit1, passbit2, passbit3, passbit4, passbit5, passbit6, passbit7, passbit8, passbit9, passbit10, passbit11, passbit12, passbit13, passbit14, passbit15, passbit16, passbit17, passbit18;
+        UInt_t passbit0, passbit1, passbit2, passbit3, passbit4, passbit5, passbit6, passbit7, passbit8, passbit9, passbit10, passbit11, passbit12, passbit13, passbit14, passbit15, passbit16, passbit17, passbit18;
         Int_t  charge; 
 
 	TLorentzVector dimuon_p4;
@@ -253,28 +253,29 @@ std::vector <UInt_t> Onia2MuMuRootupler::getTriggerBits(const edm::Event& iEvent
 	ss9<<"HLT_Mu16_TkMu0_dEta18_Onia_v"<<version;
 	bits_9.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss9.str()).label().c_str()));
 
+	ss10<<"HLT_Mu16_TkMu0_dEta18_Phi_v2"<<version;
+	bits_10.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss17.str()).label().c_str()));
+
 	 //TnP paths
-	 ss10<<"HLT_Mu7p5_L2Mu2_Jpsi_v"<<version;
-	 bits_10.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss10.str()).label().c_str()));
-	 ss11<<"HLT_Mu7p5_L2Mu2_Upsilon_v"<<version;
-	 bits_11.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss11.str()).label().c_str()));
+	 ss11<<"HLT_Mu7p5_L2Mu2_Jpsi_v"<<version;
+	 bits_11.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss10.str()).label().c_str()));
+	 ss12<<"HLT_Mu7p5_L2Mu2_Upsilon_v"<<version;
+	 bits_12.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss11.str()).label().c_str()));
 
-	 ss12<<"HLT_Mu7p5_Track2_Jpsi_v"<<version;
-	 bits_12.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss12.str()).label().c_str()));
-	 ss13<<"HLT_Mu7p5_Track3p5_Jpsi_v"<<version;
-	 bits_13.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss13.str()).label().c_str()));
-	 ss14<<"HLT_Mu7p5_Track7_Jpsi_v"<<version;
-	 bits_14.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss14.str()).label().c_str()));
-	 ss15<<"HLT_Mu7p5_Track2_Upsilon_v"<<version;
-	 bits_15.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss15.str()).label().c_str()));
-	 ss16<<"HLT_Mu7p5_Track3p5_Upsilon_v"<<version;
-	 bits_16.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss16.str()).label().c_str()));
-	 ss17<<"HLT_Mu7p5_Track7_Upsilon_v"<<version;
-	 bits_17.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss17.str()).label().c_str()));
-
-	 ss18<<"HLT_Mu16_TkMu0_dEta18_Phi_v2"<<version;
+	 ss13<<"HLT_Mu7p5_Track2_Jpsi_v"<<version;
+	 bits_13.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss12.str()).label().c_str()));
+	 ss14<<"HLT_Mu7p5_Track3p5_Jpsi_v"<<version;
+	 bits_14.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss13.str()).label().c_str()));
+	 ss15<<"HLT_Mu7p5_Track7_Jpsi_v"<<version;
+	 bits_15.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss14.str()).label().c_str()));
+	 ss16<<"HLT_Mu7p5_Track2_Upsilon_v"<<version;
+	 bits_16.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss15.str()).label().c_str()));
+	 ss17<<"HLT_Mu7p5_Track3p5_Upsilon_v"<<version;
+	 bits_17.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss16.str()).label().c_str()));
+	 ss18<<"HLT_Mu7p5_Track7_Upsilon_v"<<version;
 	 bits_18.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss17.str()).label().c_str()));
 
+	 
       }
 
       //std::cout << "trg handle result: " << triggerResults_handle->size() << std::endl;
