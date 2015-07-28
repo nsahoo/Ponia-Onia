@@ -5,13 +5,15 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(100))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 
 
 process.GlobalTag.globaltag = cms.string('74X_dataRun2_Prompt_v0')
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('/store/user/zhenhu/MuOnia/Onia2MuMuPAT-Run2015B-MuOina-v2/3c0bc5c741de78e17f27570e8d4bbe40/Onia2MuMuPAT_10_1_Z7q.root')
+#    fileNames = cms.untracked.vstring('/store/user/zhenhu/MuOnia/Onia2MuMuPAT-Run2015B-MuOina-v2/3c0bc5c741de78e17f27570e8d4bbe40/Onia2MuMuPAT_10_1_Z7q.root')
+#    fileNames = cms.untracked.vstring('/store/user/zhenhu/MuOnia/Onia2MuMuPAT-Run2015B-MuOina-v2/3c0bc5c741de78e17f27570e8d4bbe40/Onia2MuMuPAT_11_1_ybZ.root')
+    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/n/nsahoo/Run2-TRG-study/CMSSW_7_4_6_patch6/src/HeavyFlavorAnalysis/Skimming/test/Onia2MuMuPAT-Run2015B.root')
 
 )
 
