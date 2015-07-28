@@ -73,7 +73,7 @@ class Onia2MuMuRootupler:public edm::EDAnalyzer {
         Int_t  irank;
         UInt_t trigger;
         std::vector<UInt_t> trigvec;
-        UInt_t passbit0, passbit1, passbit2, passbit3, passbit4, passbit5, passbit6, passbit7, passbit8, passbit9, passbit10, passbit11, passbit12, passbit13, passbit14, passbit15, passbit16, passbit17, passbit18;
+        UInt_t passbit0, passbit1, passbit2, passbit3, passbit4, passbit5, passbit6, passbit7, passbit8, passbit9, passbit10, passbit11, passbit12, passbit13, passbit14, passbit15, passbit16, passbit17;
         Int_t  charge; 
 
 	TLorentzVector dimuon_p4;
@@ -149,7 +149,6 @@ OnlyGen_(iConfig.getParameter<bool>("OnlyGen"))
     onia_tree->Branch("passbit15", &passbit15, "passbit15/i");
     onia_tree->Branch("passbit16", &passbit16, "passbit16/i");
     onia_tree->Branch("passbit17", &passbit17, "passbit17/i");
-    onia_tree->Branch("passbit18", &passbit18, "passbit18/i");
 
     onia_tree->Branch("charge",    &charge,    "charge/I");
 
@@ -220,25 +219,24 @@ std::vector <UInt_t> Onia2MuMuRootupler::getTriggerBits(const edm::Event& iEvent
    iEvent.getByToken(triggerResults_Label, triggerResults_handle);
    if ( triggerResults_handle.isValid() ) { 
       const edm::TriggerNames & TheTriggerNames = iEvent.triggerNames(*triggerResults_handle);
-      std::vector <unsigned int> bits_0, bits_1, bits_2, bits_3, bits_4, bits_5, bits_6, bits_7, bits_8, bits_9, bits_10, bits_11, bits_12, bits_13, bits_14, bits_15, bits_16, bits_17, bits_18;
+      std::vector <unsigned int> bits_0, bits_1, bits_2, bits_3, bits_4, bits_5, bits_6, bits_7, bits_8, bits_9, bits_10, bits_11, bits_12, bits_13, bits_14, bits_15, bits_16, bits_17;
       //std::vector <unsigned int>  bits_0, bits_1, bits_2, bits_3, bits_4, bits_5, bits_6, bits_7, bits_8, bits_9 ;
      
       for ( int version = 1; version<3; version ++ ) {
-	std::stringstream ss0,ss1,ss2,ss3,ss4,ss5,ss6,ss7,ss8,ss9,ss10,ss11,ss12,ss13,ss14,ss15,ss16,ss17,ss18;
+	std::stringstream ss0,ss1,ss2,ss3,ss4,ss5,ss6,ss7,ss8,ss9,ss10,ss11,ss12,ss13,ss14,ss15,ss16,ss17;
 	//std::stringstream ss0,ss1,ss2,ss3,ss4,ss5,ss6,ss7,ss8,ss9 ;
 	//quarkonia paths
 
 
 	ss0<<"HLT_Dimuon16_Jpsi_v"<<version;
-	bits_0.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss0.str()).label().c_str()));       
+	bits_0.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss0.str()).label().c_str()));
+       
 	ss1<<"HLT_Dimuon20_Jpsi_v"<<version;
         bits_1.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss1.str()).label().c_str()));
-
 	ss2<<"HLT_Dimuon13_PsiPrime_v"<<version;
 	bits_2.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss2.str()).label().c_str()));
 	ss3<<"HLT_Dimuon13_Upsilon_v"<<version;
 	bits_3.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss3.str()).label().c_str()));
-
 	ss4<<"HLT_Dimuon10_Jpsi_Barrel_v"<<version;
 	bits_4.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss4.str()).label().c_str()));
 	ss5<<"HLT_Dimuon8_PsiPrime_Barrel_v"<<version;
@@ -247,35 +245,31 @@ std::vector <UInt_t> Onia2MuMuRootupler::getTriggerBits(const edm::Event& iEvent
 	bits_6.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss6.str()).label().c_str()));
 	ss7<<"HLT_Dimuon0_Phi_Barrel_v"<<version;
 	bits_7.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss7.str()).label().c_str()));
-
 	ss8<<"HLT_Mu25_TkMu0_dEta18_Onia_v"<<version;
-	bits_8.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss8.str()).label().c_str()));	
+	bits_8.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss8.str()).label().c_str()));
+	
 	ss9<<"HLT_Mu16_TkMu0_dEta18_Onia_v"<<version;
 	bits_9.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss9.str()).label().c_str()));
 
-	ss10<<"HLT_Mu16_TkMu0_dEta18_Phi_v2"<<version;
-	bits_10.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss17.str()).label().c_str()));
-
 	 //TnP paths
-	 ss11<<"HLT_Mu7p5_L2Mu2_Jpsi_v"<<version;
-	 bits_11.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss10.str()).label().c_str()));
-	 ss12<<"HLT_Mu7p5_L2Mu2_Upsilon_v"<<version;
-	 bits_12.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss11.str()).label().c_str()));
+	 ss10<<"HLT_Mu7p5_L2Mu2_Jpsi_v"<<version;
+	 bits_10.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss10.str()).label().c_str()));
+	 ss11<<"HLT_Mu7p5_L2Mu2_Upsilon_v"<<version;
+	 bits_11.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss11.str()).label().c_str()));
+	 ss12<<"HLT_Mu7p5_Track2_Jpsi_v"<<version;
+	 bits_12.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss12.str()).label().c_str()));
+	 ss13<<"HLT_Mu7p5_Track3p5_Jpsi_v"<<version;
+	 bits_13.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss13.str()).label().c_str()));
+	 ss14<<"HLT_Mu7p5_Track7_Jpsi_v"<<version;
+	 bits_14.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss14.str()).label().c_str()));
+	 ss15<<"HLT_Mu7p5_Track2_Upsilon_v"<<version;
+	 bits_15.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss15.str()).label().c_str()));
+	 ss16<<"HLT_Mu7p5_Track3p5_Upsilon_v"<<version;
+	 bits_16.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss16.str()).label().c_str()));
+	 ss17<<"HLT_Mu7p5_Track7_Upsilon_v"<<version;
+	 bits_17.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss17.str()).label().c_str()));
 
-	 ss13<<"HLT_Mu7p5_Track2_Jpsi_v"<<version;
-	 bits_13.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss12.str()).label().c_str()));
-	 ss14<<"HLT_Mu7p5_Track3p5_Jpsi_v"<<version;
-	 bits_14.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss13.str()).label().c_str()));
-	 ss15<<"HLT_Mu7p5_Track7_Jpsi_v"<<version;
-	 bits_15.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss14.str()).label().c_str()));
-	 ss16<<"HLT_Mu7p5_Track2_Upsilon_v"<<version;
-	 bits_16.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss15.str()).label().c_str()));
-	 ss17<<"HLT_Mu7p5_Track3p5_Upsilon_v"<<version;
-	 bits_17.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss16.str()).label().c_str()));
-	 ss18<<"HLT_Mu7p5_Track7_Upsilon_v"<<version;
-	 bits_18.push_back(TheTriggerNames.triggerIndex( edm::InputTag(ss17.str()).label().c_str()));
 
-	 
       }
 
       //std::cout << "trg handle result: " << triggerResults_handle->size() << std::endl;
@@ -537,21 +531,6 @@ std::vector <UInt_t> Onia2MuMuRootupler::getTriggerBits(const edm::Event& iEvent
 	}
       }
 
-      for (unsigned int i=0; i<bits_18.size(); i++) {
-        unsigned int bit = bits_18[i];
-        if ( bit < triggerResults_handle->size() ){
-          if ( triggerResults_handle->accept( bit ) && !triggerResults_handle->error( bit ) ) {
-            itrigger += pow(2,18);
-            trgbitsN.push_back(1);
-            break;
-          } else{
-	    trgbitsN.push_back(0);
-	    //printf("INFO: Bit 18 size is more than handle size.\n");                                                                                                                                     
-          }
-        }
-      } 
-
-
    }
 
    trgbitsN.push_back(itrigger);
@@ -617,14 +596,13 @@ void Onia2MuMuRootupler::analyze(const edm::Event & iEvent, const edm::EventSetu
     passbit15 = trigvec.at(15);
     passbit16 = trigvec.at(16);
     passbit17 = trigvec.at(17);
-    passbit18 = trigvec.at(18);
 
-    trigger   = trigvec.at(19);
+    trigger   = trigvec.at(18);
 
 
 
     std::cout << "trigvec size: " << trigvec.size() << std::endl;
-    if (trigvec.size() != 20) printf("ERROR: size is more.\n");
+    if (trigvec.size() != 19) printf("ERROR: size is more.\n");
 
     run     = iEvent.id().run();
     event   = iEvent.id().event();
