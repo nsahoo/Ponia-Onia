@@ -11,9 +11,10 @@ process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 process.GlobalTag.globaltag = cms.string('74X_dataRun2_Prompt_v0')
 
 process.source = cms.Source("PoolSource",
-#    fileNames = cms.untracked.vstring('/store/user/zhenhu/MuOnia/Onia2MuMuPAT-Run2015B-MuOina-v2/3c0bc5c741de78e17f27570e8d4bbe40/Onia2MuMuPAT_10_1_Z7q.root')
-#    fileNames = cms.untracked.vstring('/store/user/zhenhu/MuOnia/Onia2MuMuPAT-Run2015B-MuOina-v2/3c0bc5c741de78e17f27570e8d4bbe40/Onia2MuMuPAT_11_1_ybZ.root')
-    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/n/nsahoo/Run2-TRG-study/CMSSW_7_4_6_patch6/src/HeavyFlavorAnalysis/Skimming/test/Onia2MuMuPAT-Run2015B.root')
+#    fileNames = cms.untracked.vstring('/store/user/nsahoo/Charmonium/Onia2MuMuPAT-Run2015B-Charmonium-v3/150729_042156/0000/Onia2MuMuPAT-Run2015B_105.root')
+    fileNames = cms.untracked.vstring('/store/user/nsahoo/MuOnia/Onia2MuMuPAT-Run2015B-MuOnia-v3/150729_044939/0000/Onia2MuMuPAT-Run2015B_112.root')
+#    fileNames = cms.untracked.vstring('/store/user/nsahoo/MuOnia/Onia2MuMuPAT-Run2015B-MuOnia-v1/150727_073035/0000/Onia2MuMuPAT-Run2015B_102.root')
+#    fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/n/nsahoo/Run2-TRG-study/CMSSW_7_4_7_patch2/src/HeavyFlavorAnalysis/Skimming/test/Onia2MuMuPAT-Run2015B.root')
 
 )
 
