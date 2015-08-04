@@ -61,7 +61,7 @@ void plotHisto(TString dataset, TString varPlot){
 			  "HLT_Mu7p5_Track7_Jpsi_v*", "HLT_Mu7p5_Track2_Upsilon_v*", "HLT_Mu7p5_Track3p5_Upsilon_v*", "HLT_Mu7p5_Track7_Upsilon_v*"};                                          
 
  
-  for(int i=0; i<histoN; i++){
+  for(unsigned int i=0; i<histoN; i++){
     printf("--------------------------------------\n");
     printf("HLT path: %s \n", hltName[i]);
     //h[i] = new TH1D(Form("h[%i]",i),"; M(#mu^{+}#mu^{-}) [GeV/c^{2}]; Events per GeV",300,0,300);
@@ -91,6 +91,7 @@ void plotHisto(TString dataset, TString varPlot){
     //cv[i]->Print(Form("MuOnia/plots_%i.pdf",i));
     //cv[i]->Print(Form("Charmonium/plots_%i.pdf",i));
     cv[i]->Print(Form("plots-v3-30jul/%s_%s.pdf",dataset.Data(),hltName[i]));
+    cv[i]->Print(Form("plots-v3-30jul/%s_%s.png",dataset.Data(),hltName[i]));
 
     delete t1;
   }
