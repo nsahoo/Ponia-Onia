@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include <iomanip> //setprecision                                                                                                                                                          
 #include <string.h>
@@ -29,18 +28,32 @@ void plotHisto(TString dataset, TString varPlot){
   TChain *ch = new TChain("rootuple/oniaTree");
   if (dataset=="MuOnia"){
     printf("accessing MuOnia files\n");
-    ch->Add("MuOnia-2015B-data-v3-merged.root");
+    ch->Add("MuOnia-2015B-data-v3-30jul-merged.root");
   } else if(dataset=="Charmonium"){
     printf("accessing Charmonium files\n");
     ch->Add("Charmonium-2015B-data-v3-30jul-merged.root");
   }
 
-  if (varPlot=="1")
+
+  TString type;
+  TString pt_type;
+  TString eta_type;
+  if (varPlot=="1"){
     printf("plotting mu+ pt,eta\n");
-  else if (varPlot=="2")
+    type="mup";
+    //pt_type=="muonP_p4.Pt()";
+    //eta_type=="muonP_p4.Eta()";
+  } else if (varPlot=="2"){
     printf("plotting mu- pt,eta\n");
-  else if (varPlot=="3")
+    type="mun";
+    //pt_type=="muonN_p4.Pt()";
+    //eta_type=="muonN_p4.Eta()";
+  } else if (varPlot=="3"){
     printf("plotting dimuon pt, rapidity \n");
+    type="dimu";
+    //pt_type=="dimuon_p4.Pt()";
+    //eta_type=="dimuon_p4.Rapidity()";
+  }
 
   TTree *tr = ch;
   int nentries = tr->GetEntries();
@@ -49,7 +62,9 @@ void plotHisto(TString dataset, TString varPlot){
 
   const unsigned int histoN = 19;                                                                                                                                                              
   TH1D *h[histoN];                                                                                                                                                                             
-  TCanvas *cv[histoN];                                                                                                                                                                            
+  TH1D *g[histoN];
+  TCanvas *cv[histoN];                               
+  //TCanvas *cn[histoN];                                                                                                                                        
   TString hltBit[histoN] = {"passbit0",  "passbit1",  "passbit2",  "passbit3",  "passbit4",  "passbit5",  "passbit6",  "passbit7", "passbit8", "passbit9",                                             
                             "passbit10", "passbit11", "passbit12", "passbit13", "passbit14", "passbit15", "passbit16", "passbit17", "passbit18"};
 
@@ -61,14 +76,32 @@ void plotHisto(TString dataset, TString varPlot){
 			  "HLT_Mu7p5_Track7_Jpsi_v*", "HLT_Mu7p5_Track2_Upsilon_v*", "HLT_Mu7p5_Track3p5_Upsilon_v*", "HLT_Mu7p5_Track7_Upsilon_v*"};                                          
 
  
-  for(unsigned int i=0; i<histoN; i++){
+  for(int i=0; i<histoN; i++){
     printf("--------------------------------------\n");
     printf("HLT path: %s \n", hltName[i]);
     //h[i] = new TH1D(Form("h[%i]",i),"; M(#mu^{+}#mu^{-}) [GeV/c^{2}]; Events per GeV",300,0,300);
-    h[i] = new TH1D(Form("h[%i]",i),"; P_{T}(#mu^{+})[GeV]; Events/0.5",150,0,75);
     cv[i] = new TCanvas(Form("cv[%i]",i),Form("canvas_%i",i),800,600);
+    //cn[i] = new TCanvas(Form("cn[%i]",i),Form("canvas_%i",i),800,600);
+    if (varPlot=="1"){
+      h[i] = new TH1D(Form("h[%i]",i),"; P_{T}^{#mu^{+}}[GeV]; Events/0.5",150,0,75);
+      g[i] = new TH1D(Form("g[%i]",i),"; #eta^{#mu^{+}}; Events/0.1",60,-3.,3.);
+      tr->Draw(Form("muonP_p4.Pt() >> h[%i]",i),hltBit[i]);
+      tr->Draw(Form("muonP_p4.Eta() >> g[%i]",i),hltBit[i]);
+    } else if (varPlot=="2"){
+      h[i] = new TH1D(Form("h[%i]",i),"; P_{T}^{#mu^{-}}[GeV]; Events/0.5",150,0,75);
+      g[i] = new TH1D(Form("g[%i]",i),"; #eta^{#mu^{-}}; Events/0.1",60,-3.,3.);
+      tr->Draw(Form("muonN_p4.Pt() >> h[%i]",i),hltBit[i]);
+      tr->Draw(Form("muonN_p4.Eta() >> g[%i]",i),hltBit[i]);
+    } else if (varPlot=="3"){
+      h[i] = new TH1D(Form("h[%i]",i),"; P_{T}^{#mu#mu}[GeV]; Events/0.5",150,0,75);
+      g[i] = new TH1D(Form("g[%i]",i),"; #eta^{#mu#mu}; Events/0.1",60,-3.,3.);
+      tr->Draw(Form("dimuon_p4.Pt() >> h[%i]",i),hltBit[i]);
+      tr->Draw(Form("dimuon_p4.Rapidity() >> g[%i]",i),hltBit[i]);
+    }
 
-    tr->Draw(Form("dimuon_p4.Pt() >> h[%i]",i),hltBit[i]);
+
+    //tr->Draw(Form("dimuon_p4.Pt() >> h[%i]",i),hltBit[i]);
+    //tr->Draw(Form("pt_type >> h[%i]",i),hltBit[i]);
     h[i]->SetLineColor(1);
     //h[i]->SetXMinimum(0.1);
     h[i]->Draw();
@@ -90,10 +123,31 @@ void plotHisto(TString dataset, TString varPlot){
     ////cv[i]->SetLogy();
     //cv[i]->Print(Form("MuOnia/plots_%i.pdf",i));
     //cv[i]->Print(Form("Charmonium/plots_%i.pdf",i));
-    cv[i]->Print(Form("plots-v3-30jul/%s_%s.pdf",dataset.Data(),hltName[i]));
-    cv[i]->Print(Form("plots-v3-30jul/%s_%s.png",dataset.Data(),hltName[i]));
+    cv[i]->Print(Form("plots-v3-30jul/%s/%s_pT_%s.pdf",dataset.Data(),type.Data(),hltName[i]));
+    //cv[i]->Print(Form("plots-v3-30jul/%s_%s.png",dataset.Data(),hltName[i]));
+    //----------------------------------------------------------------------------------------------------
+    cv[i]->Update();
+    //tr->Draw(Form("dimuon_p4.Rapidity() >> g[%i]",i),hltBit[i]);
+    //tr->Draw(Form("pt_type >> h[%i]",i),hltBit[i]);                                                                                                                                                 
+    g[i]->SetLineColor(1);
+    //h[i]->SetXMinimum(0.1);                                                                                                                                                                       
+    g[i]->Draw();
+    g[i]->GetYaxis()->SetTitleOffset(1.4);
+    //h[i]->SetAxisRange(0.1, 300.,"X");                                                                                                                                                             
+    t1->DrawLatex(.35,.86+fixNDC,TString::Format("%s",hltName[i]));
+    t1->DrawLatex(.19,.92,TString::Format("CMS Preliminary"));
+    t1->DrawLatex(.54,.92,TString::Format("13 TeV data"));
+
+    ////cv[i]->SetLogx();                                                                                                                                                                             
+    ////cv[i]->SetLogy();                                                                                                                                                                           
+    //cv[i]->Print(Form("MuOnia/plots_%i.pdf",i));                                                                                                                                                     
+    //cv[i]->Print(Form("Charmonium/plots_%i.pdf",i));                                                                                                                                                
+    //cv[i]->Update();
+    cv[i]->Print(Form("plots-v3-30jul/%s/%s_eta_%s.pdf",dataset.Data(),type.Data(),hltName[i]));
+    //cv[i]->Print(Form("plots-v3-30jul/%s_%s.png",dataset.Data(),hltName[i]));      
 
     delete t1;
+    //delete t2;
   }
  
 
