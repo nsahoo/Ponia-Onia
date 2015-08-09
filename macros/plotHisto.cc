@@ -53,6 +53,9 @@ void plotHisto(TString dataset, TString varPlot){
     type="dimu";
     //pt_type=="dimuon_p4.Pt()";
     //eta_type=="dimuon_p4.Rapidity()";
+  } else if (varPlot=="4"){
+    printf("plotting dimuon inv. mass \n");
+    type="dimu";
   }
 
   TTree *tr = ch;
@@ -74,6 +77,10 @@ void plotHisto(TString dataset, TString varPlot){
 			  "HLT_Mu25_TkMu0_dEta18_Onia_v*", "HLT_Mu16_TkMu0_dEta18_Onia_v*", "HLT_Mu16_TkMu0_dEta18_Phi_v*",
 			  "HLT_Mu7p5_L2Mu2_Jpsi_v*", "HLT_Mu7p5_L2Mu2_Upsilon_v*", "HLT_Mu7p5_Track2_Jpsi_v*", "HLT_Mu7p5_Track3p5_Jpsi_v*",                                                       
 			  "HLT_Mu7p5_Track7_Jpsi_v*", "HLT_Mu7p5_Track2_Upsilon_v*", "HLT_Mu7p5_Track3p5_Upsilon_v*", "HLT_Mu7p5_Track7_Upsilon_v*"};                                          
+
+  double xmin[19] = {2., 2., 3., 8., 2., 3., 8., 0.5, 2., 2., 0.5, 2., 8., 2., 2., 2., 8., 8., 8.};
+  double xmax[19] = {4., 4., 5., 15.,4., 5.,15., 2., 13., 13., 2., 4., 15.,4., 4., 4.,15., 15., 15.};
+  double nbins[19] = {20.,20.,20.,70.,20.,20.,70.,15.,110.,110.,15.,20.,70.,20.,20.,20.,70.,70.,70.};   
 
  
   for(int i=0; i<histoN; i++){
@@ -97,9 +104,13 @@ void plotHisto(TString dataset, TString varPlot){
       g[i] = new TH1D(Form("g[%i]",i),"; #eta^{#mu#mu}; Events/0.1",60,-3.,3.);
       tr->Draw(Form("dimuon_p4.Pt() >> h[%i]",i),hltBit[i]);
       tr->Draw(Form("dimuon_p4.Rapidity() >> g[%i]",i),hltBit[i]);
+    } else if (varPlot=="4"){
+      h[i] = new TH1D(Form("h[%i]",i),"; M(#mu^{+}#mu^{-}) [GeV/c^{2}]; Events/0.1",nbins[i],xmin[i],xmax[i]);
+      tr->Draw(Form("dimuon_p4.M() >> h[%i]",i),hltBit[i]);
     }
 
 
+    if (varPlot=="1" || varPlot=="2" || varPlot=="3"){
     //tr->Draw(Form("dimuon_p4.Pt() >> h[%i]",i),hltBit[i]);
     //tr->Draw(Form("pt_type >> h[%i]",i),hltBit[i]);
     h[i]->SetLineColor(1);
@@ -148,9 +159,30 @@ void plotHisto(TString dataset, TString varPlot){
 
     delete t1;
     //delete t2;
+    } else if (varPlot=="4"){
+      h[i]->SetLineColor(1);
+      //h[i]->SetXMinimum(0.1);                                                                 
+      h[i]->Draw();
+      h[i]->GetYaxis()->SetTitleOffset(1.4);
+      //h[i]->SetAxisRange(0.1, 300.,"X");                                                                                                                                                  
+
+      TLatex *t1 = new TLatex();
+      t1->SetNDC();
+      //t1->SetTextFont(12);                                                                                                                                                            
+      t1->SetTextColor(1);
+      t1->SetTextSize(0.03);
+      t1->SetTextAlign(12);
+      double fixNDC = 0.;
+      t1->DrawLatex(.35,.86+fixNDC,TString::Format("%s",hltName[i]));
+      t1->DrawLatex(.19,.92,TString::Format("CMS Preliminary"));
+      t1->DrawLatex(.54,.92,TString::Format("13 TeV data"));
+      cv[i]->Print(Form("plots-v3-30jul/%s/%s_mass_%s.pdf",dataset.Data(),type.Data(),hltName[i]));
+
+      delete t1;
+    }
+
   }
  
-
 }
 
 int main(int argc, char** argv){
@@ -169,7 +201,7 @@ int main(int argc, char** argv){
     printf("You haven't put the right number of arguments, please give the arguments like below..\n");
     printf("./plotHisto [dataset] [varPlot] \n");
     printf("dataset: MuOnia Charmonium \n");
-    printf("varPlot: 1 2 3\n");
+    printf("varPlot: 1 2 3 4\n");
 
   }
   
