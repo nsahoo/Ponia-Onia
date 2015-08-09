@@ -1,3 +1,8 @@
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  macro to calculate HLT efficiency as a function of pT, eta
+//  author: Niladribihari Sahoo, <nsahoo@cern.ch>
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 #include<iostream>
 #include <iomanip> //setprecision                                                                                                                                                       
 #include <string.h>
@@ -67,7 +72,7 @@ void eff_9aug(TString dataset){
   TH1D *h_eta_pass[histoN];
   TCanvas *cv[histoN];
 
-  for (int i=0; i<histoN; i++){
+  for (unsigned int i=0; i<histoN; i++){
     printf("--------------------------------------\n");
     printf("HLT path: %s \n", hltName[i]);
 
