@@ -1,3 +1,9 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// macro to plot pt, eta and dimuon mass spectrum for different trigger paths
+// author: Niladribihari Sahoo, <nsahoo@cern.ch>
+// date: 21 july 2015, TUE 11:30
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 #include<iostream>
 #include <iomanip> //setprecision                                                                                                                                                          
 #include <string.h>
@@ -83,7 +89,7 @@ void plotHisto(TString dataset, TString varPlot){
   double nbins[19] = {20.,20.,20.,70.,20.,20.,70.,15.,110.,110.,15.,20.,70.,20.,20.,20.,70.,70.,70.};   
 
  
-  for(int i=0; i<histoN; i++){
+  for(unsigned int i=0; i<histoN; i++){
     printf("--------------------------------------\n");
     printf("HLT path: %s \n", hltName[i]);
     //h[i] = new TH1D(Form("h[%i]",i),"; M(#mu^{+}#mu^{-}) [GeV/c^{2}]; Events per GeV",300,0,300);
